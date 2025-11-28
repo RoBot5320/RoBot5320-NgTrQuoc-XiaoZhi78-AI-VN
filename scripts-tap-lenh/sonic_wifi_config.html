@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>RoBot5320 – Cấu hình WiFi bằng âm thanh</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-main: #050814;
+      --bg-card: #0b1020;
+      --accent: #00ff88;
+      --accent-soft: rgba(0, 255, 136, 0.18);
+      --text-main: #f7f9fc;
+      --text-sub: #a5b1c5;
+      --border-soft: #1b2235;
+      --danger: #ff4d4f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+      background: radial-gradient(circle at top, #10152b 0, #050814 55%, #02040a 100%);
+      margin: 0;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-main);
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(0, 255, 136, 0.08), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(66, 133, 244, 0.15), transparent 60%),
+                  var(--bg-card);
+      padding: 2rem 1.75rem 1.75rem;
+      border-radius: 20px;
+      box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.02),
+        0 0 35px rgba(0, 255, 136, 0.18);
+      max-width: 420px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(0, 255, 136, 0.16), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(0, 140, 255, 0.14), transparent 60%);
+      opacity: 0.4;
+      z-index: -1;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(0, 255, 136, 0.08);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      margin-bottom: 0.75rem;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    h2 {
+      text-align: left;
+      margin: 0 0 0.25rem;
+      font-size: 1.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2 span.icon {
+      font-size: 1.4rem;
+    }
+
+    .subtitle {
+      margin: 0 0 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin: 1rem 0 0.35rem;
+      font-size: 0.9rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 0.7rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      color: var(--text-sub);
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.7rem 0.8rem 0.7rem 2.1rem;
+      font-size: 0.95rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-soft);
+      background: rgba(5, 8, 25, 0.9);
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, transform 0.05s ease;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="password"]::placeholder {
+      color: #5c667d;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 255, 136, 0.2);
+      background: rgba(7, 11, 35, 0.98);
+      transform: translateY(-0.5px);
+    }
+
+    .checkbox-container {
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 0.6rem;
+      margin-top: 1.35rem;
+    }
+
+    button {
+      padding: 0.78rem 0.8rem;
+      font-size: 0.95rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.06s ease, opacity 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #41ffb2);
+      color: #02110a;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 255, 136, 0.35);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 14px 34px rgba(0, 255, 136, 0.5);
+      transform: translateY(-0.5px);
+    }
+
+    .btn-primary:active {
+      box-shadow: 0 6px 18px rgba(0, 255, 136, 0.35);
+      transform: translateY(0.3px) scale(0.995);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-0.4px);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0.2px) scale(0.995);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-download {
+      margin-top: 0.6rem;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    .btn-download:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    audio {
+      margin-top: 1.3rem;
+      width: 100%;
+      outline: none;
+      filter: drop-shadow(0 0 12px rgba(0, 255, 136, 0.25));
+    }
+
+    .hint {
+      margin-top: 0.7rem;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    .hint span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.7rem 1.25rem 1.4rem;
+        border-radius: 18px;
+      }
+      h2 {
+        font-size: 1.25rem;
+      }
+      .btn-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="robot5320-sonic-card">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      RoBot5320 · Cấu hình WiFi bằng âm thanh
+    </div>
+    <h2><span class="icon">📶</span> Cấu hình WiFi bằng sóng âm</h2>
+    <p class="subtitle">
+      Nhập thông tin WiFi, RoBot5320 sẽ tạo file âm thanh để thiết bị ESP32 nghe và tự kết nối mạng.
+    </p>
+
+    <label for="ssid">Tên WiFi (SSID)</label>
+    <div class="input-wrapper">
+      <span class="input-prefix">📡</span>
+      <input id="ssid" type="text" value="" placeholder="Nhập tên WiFi (ví dụ: RoBot5320)" />
+    </div>
+
+    <label for="pwd">Mật khẩu WiFi</label>
+    <div class="input-wrapper">
+      <span class="input-prefix">🔑</span>
+      <input id="pwd" type="password" value="" placeholder="Nhập mật khẩu WiFi" />
+    </div>
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="loopCheck" checked />
+      <label for="loopCheck">Tự động lặp lại âm thanh cấu hình WiFi</label>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="btn-generate">🎵 Tạo & phát âm thanh</button>
+      <button class="btn-secondary" id="btn-stop">⏹️ Dừng phát</button>
+    </div>
+
+    <button class="btn-secondary btn-download" id="btn-download" disabled>⬇️ Tải file WAV</button>
+
+    <audio id="player" controls></audio>
+
+    <p class="hint">
+      Gợi ý: <span>Tăng âm lượng điện thoại lên khoảng 80%</span>, đặt loa gần thiết bị ESP32 rồi nhấn phát.
+    </p>
+  </div>
+
+  <script>
+    const ROBOT5320_MARK = 1800;
+    const ROBOT5320_SPACE = 1500;
+    const ROBOT5320_SAMPLE_RATE = 44100;
+    const ROBOT5320_BIT_RATE = 100;
+    const ROBOT5320_START_BYTES = [0x01, 0x02];
+    const ROBOT5320_END_BYTES = [0x03, 0x04];
+    let robot5320LastUrl = null;
+
+    function robot5320Checksum(data) {
+      return data.reduce(function (sum, b) {
+        return (sum + b) & 0xff;
+      }, 0);
+    }
+
+    function robot5320ToBits(byte) {
+      const bits = [];
+      for (let i = 7; i >= 0; i--) {
+        bits.push((byte >> i) & 1);
+      }
+      return bits;
+    }
+
+    function robot5320AfskModulate(bits) {
+      const samplesPerBit = ROBOT5320_SAMPLE_RATE / ROBOT5320_BIT_RATE;
+      const totalSamples = Math.floor(bits.length * samplesPerBit);
+      const buffer = new Float32Array(totalSamples);
+      for (let i = 0; i < bits.length; i++) {
+        const freq = bits[i] ? ROBOT5320_MARK : ROBOT5320_SPACE;
+        for (let j = 0; j < samplesPerBit; j++) {
+          const t = (i * samplesPerBit + j) / ROBOT5320_SAMPLE_RATE;
+          buffer[i * samplesPerBit + j] = Math.sin(2 * Math.PI * freq * t);
+        }
+      }
+      return buffer;
+    }
+
+    function robot5320FloatTo16BitPCM(floatSamples) {
+      const buffer = new Uint8Array(floatSamples.length * 2);
+      for (let i = 0; i < floatSamples.length; i++) {
+        const s = Math.max(-1, Math.min(1, floatSamples[i]));
+        const val = s < 0 ? s * 0x8000 : s * 0x7fff;
+        buffer[i * 2] = val & 0xff;
+        buffer[i * 2 + 1] = (val >> 8) & 0xff;
+      }
+      return buffer;
+    }
+
+    function robot5320BuildWav(pcm) {
+      const wavHeader = new Uint8Array(44);
+      const dataLen = pcm.length;
+      const fileLen = 36 + dataLen;
+
+      function writeStr(offset, str) {
+        for (let i = 0; i < str.length; i++) {
+          wavHeader[offset + i] = str.charCodeAt(i);
+        }
+      }
+
+      function write32(offset, value) {
+        wavHeader[offset] = value & 0xff;
+        wavHeader[offset + 1] = (value >> 8) & 0xff;
+        wavHeader[offset + 2] = (value >> 16) & 0xff;
+        wavHeader[offset + 3] = (value >> 24) & 0xff;
+      }
+
+      function write16(offset, value) {
+        wavHeader[offset] = value & 0xff;
+        wavHeader[offset + 1] = (value >> 8) & 0xff;
+      }
+
+      writeStr(0, "RIFF");
+      write32(4, fileLen);
+      writeStr(8, "WAVE");
+      writeStr(12, "fmt ");
+      write32(16, 16);
+      write16(20, 1);
+      write16(22, 1);
+      write32(24, ROBOT5320_SAMPLE_RATE);
+      write32(28, ROBOT5320_SAMPLE_RATE * 2);
+      write16(32, 2);
+      write16(34, 16);
+      writeStr(36, "data");
+      write32(40, dataLen);
+
+      return new Blob([wavHeader, pcm], { type: "audio/wav" });
+    }
+
+    function robot5320Generate() {
+      robot5320StopPlay();
+      const ssid = document.getElementById("ssid").value.trim();
+      const pwd = document.getElementById("pwd").value.trim();
+      const dataStr = ssid + "\n" + pwd;
+      const textBytes = Array.from(new TextEncoder().encode(dataStr));
+      const fullBytes = ROBOT5320_START_BYTES.concat(textBytes, [robot5320Checksum(textBytes)], ROBOT5320_END_BYTES);
+
+      let bits = [];
+      fullBytes.forEach(function (b) {
+        bits = bits.concat(robot5320ToBits(b));
+      });
+
+      const floatBuf = robot5320AfskModulate(bits);
+      const pcmBuf = robot5320FloatTo16BitPCM(floatBuf);
+      const wavBlob = robot5320BuildWav(pcmBuf);
+
+      const audio = document.getElementById("player");
+      if (robot5320LastUrl) {
+        URL.revokeObjectURL(robot5320LastUrl);
+      }
+      const url = URL.createObjectURL(wavBlob);
+      robot5320LastUrl = url;
+
+      audio.src = url;
+      audio.load();
+      audio.play();
+
+      const loopCheck = document.getElementById("loopCheck");
+      if (loopCheck && loopCheck.checked) {
+        audio.onended = function () {
+          audio.currentTime = 0;
+          audio.play();
+        };
+      } else {
+        audio.onended = null;
+      }
+
+      const downloadBtn = document.getElementById("btn-download");
+      if (downloadBtn) {
+        downloadBtn.disabled = false;
+      }
+    }
+
+    function robot5320StopPlay() {
+      const audio = document.getElementById("player");
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.onended = null;
+      }
+    }
+
+    function robot5320Download() {
+      if (!robot5320LastUrl) return;
+      const a = document.createElement("a");
+      a.href = robot5320LastUrl;
+      a.download = "robot5320_wifi_config.wav";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    document.getElementById("btn-generate").addEventListener("click", robot5320Generate);
+    document.getElementById("btn-stop").addEventListener("click", robot5320StopPlay);
+    document.getElementById("btn-download").addEventListener("click", robot5320Download);
+  </script>
+</body>
+</html>
